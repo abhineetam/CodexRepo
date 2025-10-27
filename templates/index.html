@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Network Printer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Send a Document to a Network Printer</h1>
+        <p>
+          Provide the printer's IP address or connection URI and select the
+          document you want to print. Supported protocols: <code>ipp://</code>,
+          <code>ipps://</code>, <code>socket://</code>, or enter an IP address to
+          use IPP by default.
+        </p>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <section class="messages">
+        {% for category, message in messages %}
+        <div class="message {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </section>
+      {% endif %}
+      {% endwith %}
+
+      <section class="form-card">
+        <form
+          method="post"
+          enctype="multipart/form-data"
+          aria-label="Print document form"
+        >
+          <div class="field">
+            <label for="printer_address">Printer Address</label>
+            <input
+              type="text"
+              id="printer_address"
+              name="printer_address"
+              placeholder="192.168.1.25 or ipp://192.168.1.25/ipp/print"
+              required
+            />
+            <small>
+              If you only provide an IP address, the app assumes IPP printing on
+              <code>/ipp/print</code>.
+            </small>
+          </div>
+
+          <div class="field">
+            <label for="document">Document</label>
+            <input type="file" id="document" name="document" required />
+            <small>
+              Supports documents, PDFs, and images up to 64&nbsp;MB per upload.
+            </small>
+          </div>
+
+          <div class="actions">
+            <button type="submit">Print</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
